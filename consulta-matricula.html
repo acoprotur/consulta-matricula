@@ -350,5 +350,22 @@ document.getElementById('q').addEventListener('keydown', e => { if(e.key === 'En
 loadData();
 </script>
 
+<script>
+/* Abre directo la matrícula que viene en el link (QR de la credencial): ...consulta-matricula.html?legajo=26ACT200073 */
+(function () {
+  var leg = new URLSearchParams(location.search).get('legajo');
+  if (!leg) return;
+  var q = document.getElementById('q'), b = document.getElementById('btn'), t = 0;
+  var intento = setInterval(function () {
+    t++;
+    var listo = /\d+\s+matr/i.test(document.body.innerText);
+    if (listo || t > 40) {
+      clearInterval(intento);
+      if (q) q.value = leg.trim().toUpperCase();
+      if (b) b.click();
+    }
+  }, 250);
+})();
+</script>
 </body>
 </html>
